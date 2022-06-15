@@ -1,11 +1,11 @@
 ### Parse CLI args for node
 
 ### Install
-`npm i darg`
+`npm i getargs`
 
 #### Basic usage:
 ```javascript
-import getArgs from 'darg';
+import getArgs from 'getargs';
 
 //Run without any options to get an object of all args supplied at runtime
 const args = getArgs({

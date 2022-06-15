@@ -1,6 +1,6 @@
 {
-  "name": "darg",
-  "version": "1.0.31",
+  "name": "getargs",
+  "version": "0.0.1",
   "description": "Quick CLI argv parser and validator",
   "main": "index.js",
   "scripts": {
@@ -18,6 +18,8 @@
   },
   "keywords": [
     "darg",
+    "getArgs",
+    "get-args",
     "argv",
     "parser",
     "cli",
