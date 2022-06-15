@@ -1,0 +1,4 @@
+node_modules/
+index.ts
+test.js
+tsconfig.json
