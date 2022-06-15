@@ -1,4 +1,4 @@
-export declare function getArgs(
+declare function getArgs(
 /**
  * Optional parameters object
  */

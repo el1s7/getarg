@@ -1,4 +1,4 @@
-export function getArgs (
+function getArgs (
 	/**
 	 * Optional parameters object
 	 */
@@ -124,4 +124,5 @@ export function getArgs (
 	return params;
 }
 
+module.exports = getArgs;
 export default getArgs;

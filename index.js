@@ -1,4 +1,6 @@
-export function getArgs(
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function getArgs(
 /**
  * Optional parameters object
  */
@@ -77,4 +79,5 @@ allowZero = false) {
     }
     return params;
 }
-export default getArgs;
+module.exports = getArgs;
+exports.default = getArgs;
