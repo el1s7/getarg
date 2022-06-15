@@ -1,6 +1,6 @@
 {
   "name": "darg",
-  "version": "1.0.3",
+  "version": "1.0.31",
   "description": "Quick CLI argv parser and validator",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "url": "git+https://github.com/el1s7/argv1.git"
   },
   "engines": {
-    "node": ">=13.0",
+    "node": ">=6.9.0",
     "npm": ">=3.0.0"
   },
   "keywords": [

@@ -1,31 +1,59 @@
-### Parse ARGS for node
+### Parse CLI args for node
+
+### Install
+`npm i darg`
 
 #### Basic usage:
 ```javascript
 import getArgs from 'darg';
 
+//Run without any options to get an object of all args supplied at runtime
 const args = getArgs({
-    output:{
+    file:{
+        required: true,
+        type: "string",
         help: "A helpful message",
+        requires: ['output']
+        alias: "f"
+    }
+    output:{
+        help: "Another helpful message",
         required: true,
         type: "string", //supported: number/json/any
         alias: "o",
     }
+},{
+    usage: "Usage: myapp.js <command>" //customize help header
 });
 
+console.log(args);
+```
 
-//call from cmd: node app.js --output=test.js
+#### Example Run
+```bash
+> node cli.js -f ./file.js --output=./out.js
 
-output = args.output;
+{
+    file: "./file.js",
+    output: "./out.js"
+}
 
 ```
 
-#### Get all args:
-```javascript
-import getArgs from 'darg';
+#### Example Help:
+```bash
+> node cli.js
 
-const args = getArgs();
+The paramater '--file' is required.
 
-//an object containing all passed args
+The paramater '--output' is required.
+
+Usage: myapp.js <command>
+
+
+--file/-f [required]            Another helpful message   
+
+--output/-o [required]            A helpful message
 
 ```
+
