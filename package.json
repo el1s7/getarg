@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/el1s7/argv1.git"
+    "url": "git+https://github.com/el1s7/getarg"
   },
   "engines": {
     "node": ">=6.9.0",
@@ -31,9 +31,9 @@
   "author": "E",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/el1s7/darg/issues"
+    "url": "https://github.com/el1s7/getarg/issues"
   },
-  "homepage": "https://github.com/el1s7/darg#readme",
+  "homepage": "https://github.com/el1s7/getarg#readme",
   "devDependencies": {
     "@types/node": "^17.0.43",
     "typescript": "^4.7.3"
