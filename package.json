@@ -1,5 +1,5 @@
 {
-  "name": "getargs",
+  "name": "getarg",
   "version": "0.0.1",
   "description": "Quick CLI argv parser and validator",
   "main": "index.js",
@@ -19,7 +19,7 @@
   "keywords": [
     "darg",
     "getArgs",
-    "get-args",
+    "get-arg",
     "argv",
     "parser",
     "cli",
