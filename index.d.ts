@@ -2,7 +2,7 @@ declare function getArgs(
 /**
  * Optional parameters object
  */
-options?: {
+parameters?: {
     [arg: string]: {
         default?: boolean;
         required?: boolean;
@@ -23,15 +23,20 @@ options?: {
          */
         requires?: string[];
     };
-}, 
-/**
- * Specify a different args string (default: process.argv.join(' '))
- */
-args?: string, 
-/**
- * Exit if none of the parameters specified was found.
- */
-allowZero?: boolean): {
+}, options?: {
+    /**
+     * Usage header message
+     */
+    usage?: string;
+    /**
+     * Specify a different args string (default: process.argv.join(' '))
+     */
+    args?: string;
+    /**
+     * Exit if none of the parameters specified was found. (default: true)
+     */
+    allowZero?: boolean;
+}): {
     [arg: string]: any;
 };
 export default getArgs;

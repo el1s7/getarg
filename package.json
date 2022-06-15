@@ -1,10 +1,10 @@
 {
   "name": "darg",
-  "version": "1.0.21",
+  "version": "1.0.3",
   "description": "Quick CLI argv parser and validator",
   "main": "index.js",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublish": "npm run build && git add . && git commit -am \"release\" && git push",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },
