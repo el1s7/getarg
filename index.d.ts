@@ -1,4 +1,8 @@
-declare const getArgs: (options?: {
+export declare function getArgs(
+/**
+ * Optional parameters object
+ */
+options?: {
     [arg: string]: {
         default?: boolean;
         required?: boolean;
@@ -19,6 +23,13 @@ declare const getArgs: (options?: {
          */
         requires?: string[];
     };
-}, allowZero?: boolean) => {};
-export { getArgs };
+}, 
+/**
+ * Specify a different args string (default: process.argv.join(' '))
+ */
+args?: string, 
+/**
+ * Exit if none of the parameters specified was found.
+ */
+allowZero?: boolean): {};
 export default getArgs;

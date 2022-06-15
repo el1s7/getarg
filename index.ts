@@ -1,4 +1,4 @@
-const getArgs = (
+export function getArgs (
 	/**
 	 * Optional parameters object
 	 */
@@ -29,21 +29,28 @@ const getArgs = (
 			 requires?: string[]
 		}
 	}, 
+
+    /**
+     * Specify a different args string (default: process.argv.join(' '))
+     */
+    args: string=null,
+
 	/**
 	 * Exit if none of the parameters specified was found.
 	 */
-	allowZero=false)=>{
-	const args = process.argv.join(' ');
+	allowZero=false
+){
+	const _args = args || process.argv.join(' ');
 
 	const regex = /\s+(?<name>--?[a-zA-Z_0-9]+)(=(?<value>(?:\{\"(?!.*--).*\})|[a-z0-9_A-Z\\\/\[\]\:\?\<\>\|\"\'\+\$\#\!\@\%\^\&\*\(\)\{\}\.\,\_\-]+))?/gmi;
 		
-	const params = Array.from(args.matchAll(regex)).reduce((o,v,i)=>(v?.groups?.name ? {
+	const params = Array.from(_args.matchAll(regex)).reduce((o,v,i)=>(v?.groups?.name ? {
 		...o,
 		[v.groups.name.replace(/\-/g,'').trim()]: v?.groups?.value ?? options?.[v.groups.name]?.default ?? true
 	} : o),{});
 
 	if(options){
-		let helpMessage = '';
+		let helpMessage = `\r\nAvailable options:\r\n`;
 		let showError = false;
 		let paramsFound=0;
 		let otherRequired: string[] = [];
@@ -51,7 +58,7 @@ const getArgs = (
 		for(var option in options){
 			var optionSettings = options[option];
 
-			helpMessage += `\r\n--${option}${optionSettings.alias ? '\\-' + optionSettings.alias : ''} ${optionSettings.required ? 'required': ''} ${optionSettings.default ? '(default ' + optionSettings.default + ')' : ''}                  ${optionSettings.help}`;
+			helpMessage += `\r\n--${option}${optionSettings.alias ? '\\-' + optionSettings.alias : ''} ${optionSettings.required ? '[required]': ''} ${optionSettings.default ? '(default ' + optionSettings.default + ')' : ''}                  ${optionSettings.help || ''}`;
 
 			if(optionSettings.alias && params[optionSettings.alias]){
 				params[option] = params[optionSettings.alias];
@@ -59,7 +66,7 @@ const getArgs = (
 
 			if((optionSettings.required || otherRequired.includes(option)) && !params[option]){
 				showError = true;
-				console.error(`The paramater '--${option}' is required.`);
+				console.error(`\r\nThe paramater '--${option}' is required.`);
 				continue;
 			}
 
@@ -75,7 +82,7 @@ const getArgs = (
 
             if(optionSettings.type == "string" && typeof params[option] !== "string"){
                 showError = true;
-				console.error(`The paramater '--${option}' is not a string.`);
+				console.error(`\r\nThe paramater '--${option}' is not a string.`);
 				continue;
             }
             
@@ -84,17 +91,20 @@ const getArgs = (
 
 				if(isNaN(params[option])){
 					showError = true;
-					console.error(`The paramater '--${option}' is not a number.`);
+					console.error(`\r\nThe paramater '--${option}' is not a number.`);
 					continue;
 				}
 			}
 
 			if(optionSettings.type == "json"){
 				try{
+					if(typeof params[option] == "boolean"){
+						throw new Error("");
+					}
 					params[option] = JSON.parse(params[option]);
 				}catch(e){
 					showError = true;
-					console.error(`The paramater '--${option}' is not a valid JSON object.`);
+					console.error(`\r\nThe paramater '--${option}' is not a valid JSON object.`);
 					continue;
 				}
 				
@@ -113,7 +123,5 @@ const getArgs = (
 	
 	return params;
 }
-
-export {getArgs};
 
 export default getArgs;
