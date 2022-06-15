@@ -39,7 +39,7 @@ export function getArgs (
 	 * Exit if none of the parameters specified was found.
 	 */
 	allowZero=false
-){
+): {[arg: string]: any} {
 	const _args = args || process.argv.join(' ');
 
 	const regex = /\s+(?<name>--?[a-zA-Z_0-9]+)(=(?<value>(?:\{\"(?!.*--).*\})|[a-z0-9_A-Z\\\/\[\]\:\?\<\>\|\"\'\+\$\#\!\@\%\^\&\*\(\)\{\}\.\,\_\-]+))?/gmi;

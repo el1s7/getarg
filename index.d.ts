@@ -31,5 +31,7 @@ args?: string,
 /**
  * Exit if none of the parameters specified was found.
  */
-allowZero?: boolean): {};
+allowZero?: boolean): {
+    [arg: string]: any;
+};
 export default getArgs;

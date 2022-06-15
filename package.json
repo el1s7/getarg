@@ -1,6 +1,6 @@
 {
   "name": "darg",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Quick CLI argv parser and validator",
   "main": "index.js",
   "scripts": {
