@@ -1,3 +1,29 @@
+const regex = /\s+(?<name>--?[a-zA-Z_0-9]+)(?:(?:=|\s(?!-))(?<value>(?:\{\"(?!.*--).*\})|(?:\[(?!.*--).*\])|[a-z0-9_A-Z\\\/\[\]\:\?\<\>\|\"\'\+\$\#\!\@\%\^\&\*\(\)\{\}\.\,\_\-]+))?/gmi;
+
+const checkType = (value: any, type?: string | undefined)=> {
+	if(type == "string" && typeof value !== "string"){
+		throw new Error("Not a string");
+	}
+	
+	if(type == "number"){
+		value = Number(value);
+	
+		if(isNaN(value)){
+			throw new Error("Not a number");
+		}
+	}
+	
+	if(type == "json"){
+		if(typeof value == "boolean"){
+			throw new Error("");
+		}
+		value = JSON.parse(value);
+	}
+
+	return value;
+}
+
+
 function getArgs (
 	/**
 	 * Optional parameters object
@@ -51,15 +77,14 @@ function getArgs (
 
 	const _args = options.args || process.argv.join(' ');
 
-	const regex = /\s+(?<name>--?[a-zA-Z_0-9]+)(?:(?:=|\s(?!-))(?<value>(?:\{\"(?!.*--).*\})|[a-z0-9_A-Z\\\/\[\]\:\?\<\>\|\"\'\+\$\#\!\@\%\^\&\*\(\)\{\}\.\,\_\-]+))?/gmi;
-		
+	
 	const params = Array.from(_args.matchAll(regex)).reduce((o,v,i)=>(v?.groups?.name ? {
 		...o,
 		[v.groups.name.replace(/\-/g,'').trim()]: v?.groups?.value ?? parameters?.[v.groups.name]?.default ?? true
 	} : o),{});
 
 	if(parameters){
-		let helpMessage = options.usage || `\r\nAvailable options:\r\n`;
+		let helpMessage = '\r\n\u001b[0;94m' + (options.usage || `Available options:`) + "\u001b[0m\r\n";
 		let showError = false;
 		let paramsFound=0;
 		let otherRequired: string[] = [];
@@ -67,7 +92,9 @@ function getArgs (
 		for(var parameter in parameters){
 			var parameterSettings = parameters[parameter];
 
-			helpMessage += `\r\n--${parameter}${parameterSettings.alias ? '\\-' + parameterSettings.alias : ''} ${parameterSettings.required ? '[required]': ''} ${parameterSettings.default ? '(default ' + parameterSettings.default + ')' : ''}                  ${parameterSettings.help || ''}`;
+			var helpMessageHead = `--${parameter}${parameterSettings.alias ? ' | -' + parameterSettings.alias : ''} ${parameterSettings.required ? '\u001b[0;31m[required]\u001b[0m' : ''} ${parameterSettings.default ? '(default ' + parameterSettings.default + ')' : ''}`;
+
+			helpMessage += `\r\n${helpMessageHead}${' '.repeat(50 - helpMessageHead.length + (parameterSettings.required ? 11 : 0))}${parameterSettings.help || ''}\r\n`;
 
 			if(parameterSettings.alias && params[parameterSettings.alias]){
 				params[parameter] = params[parameterSettings.alias];
@@ -75,7 +102,6 @@ function getArgs (
 
 			if((parameterSettings.required || otherRequired.includes(parameter)) && !params[parameter]){
 				showError = true;
-				console.error(`\r\nThe paramater '--${parameter}' is required.`);
 				continue;
 			}
 
@@ -89,36 +115,21 @@ function getArgs (
 				otherRequired = [...otherRequired, ...parameterSettings.requires];
 			}
 
-            if(parameterSettings.type == "string" && typeof params[parameter] !== "string"){
-                showError = true;
-				console.error(`\r\nThe paramater '--${parameter}' is not a string.`);
-				continue;
-            }
-            
-			if(parameterSettings.type == "number"){
-				params[parameter] = Number(params[parameter]);
-
-				if(isNaN(params[parameter])){
-					showError = true;
-					console.error(`\r\nThe paramater '--${parameter}' is not a number.`);
-					continue;
-				}
+			try{
+				params[parameter] = checkType(params[parameter], parameterSettings.type);
 			}
-
-			if(parameterSettings.type == "json"){
-				try{
-					if(typeof params[parameter] == "boolean"){
-						throw new Error("");
-					}
-					params[parameter] = JSON.parse(params[parameter]);
-				}catch(e){
-					showError = true;
-					console.error(`\r\nThe paramater '--${parameter}' is not a valid JSON object.`);
-					continue;
-				}
-				
+			catch(err){
+				console.error(`\r\n\u001b[0;33m[!] The paramater '--${parameter}' is not a ${parameterSettings.type}.`);
+				showError = true;
 			}
 		}
+
+		otherRequired.map((o)=>{
+			if(!params[o]){
+				showError = true;
+				console.error(`\r\n\u001b[0;33m[!] The paramater '--${o}' is also required.\u001b[0m`);
+			}
+		});
 
 		if(!paramsFound && !options.allowZero){
 			showError = true;

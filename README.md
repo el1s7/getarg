@@ -1,4 +1,4 @@
-### Parse CLI args for node
+### Simple and fast CLI args parser for Node
 
 ### Install
 `npm i getarg`
@@ -13,7 +13,7 @@ const args = getArgs({
         required: true,
         type: "string",
         help: "A helpful message",
-        requires: ['output']
+        requires: ['output'] //dependent parameters
         alias: "f"
     }
     output:{
@@ -40,18 +40,15 @@ console.log(args);
 
 ```
 
-#### Example Help:
+#### Example Info/Error:
 ```bash
-> node cli.js
+> node cli.js --file
 
-The paramater '--file' is required.
-
-The paramater '--output' is required.
+[!] The paramater '--file' is not a string.
 
 Usage: myapp.js <command>
 
-
---file/-f [required]            Another helpful message   
+--file/-f [required]              Another helpful message   
 
 --output/-o [required]            A helpful message
 

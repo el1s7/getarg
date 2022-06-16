@@ -2,7 +2,7 @@
 
 index.ts
 tsconfig.json
-test.js
+test.mjs
 
 # dependencies
 /node_modules
