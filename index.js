@@ -17,6 +17,9 @@ const checkType = (value, type) => {
         }
         value = JSON.parse(value);
     }
+    if (type == "boolean") {
+        value = !value || /false|0/gi.test(value) ? false : true;
+    }
     return value;
 };
 function getArgs(
