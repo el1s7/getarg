@@ -44,8 +44,12 @@ parameters, options) {
             helpMessage += `\r\n${helpMessageHead}${' '.repeat(50 - helpMessageHead.length + (parameterSettings.required ? 11 : 0))}${parameterSettings.help || ''}\r\n`;
             if (parameterSettings.alias && params[parameterSettings.alias]) {
                 params[parameter] = params[parameterSettings.alias];
+                delete params[parameterSettings.alias];
             }
-            if ((parameterSettings.required || otherRequired.includes(parameter)) && !params[parameter]) {
+            if (parameterSettings.hasOwnProperty('default') && !params[parameter]) {
+                params[parameter] = parameterSettings.default;
+            }
+            if ((parameterSettings.required || otherRequired.includes(parameter)) && !params.hasOwnProperty(parameter)) {
                 showError = true;
                 continue;
             }

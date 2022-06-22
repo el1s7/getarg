@@ -41,7 +41,7 @@ function getArgs (
 			/**
 			 * Default any
 			 */
-			type?: "string" | "number" | "json" | "any",
+			type?: "string" | "number" | "json" | "boolean" | "any",
 
 			/**
 			 * Help message
@@ -102,12 +102,18 @@ function getArgs (
 
 			if(parameterSettings.alias && params[parameterSettings.alias]){
 				params[parameter] = params[parameterSettings.alias];
+				delete params[parameterSettings.alias]
 			}
 
-			if((parameterSettings.required || otherRequired.includes(parameter)) && !params[parameter]){
+			if(parameterSettings.hasOwnProperty('default') && !params[parameter]){
+				params[parameter] = parameterSettings.default;
+			}
+
+			if((parameterSettings.required || otherRequired.includes(parameter)) && !params.hasOwnProperty(parameter)){
 				showError = true;
 				continue;
 			}
+
 
 			if(!params[parameter]){
 				continue;

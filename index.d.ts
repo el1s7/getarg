@@ -9,7 +9,7 @@ parameters?: {
         /**
          * Default any
          */
-        type?: "string" | "number" | "json" | "any";
+        type?: "string" | "number" | "json" | "boolean" | "any";
         /**
          * Help message
          */

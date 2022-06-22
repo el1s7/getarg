@@ -1,6 +1,6 @@
 {
   "name": "getarg",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Quick CLI argv parser and validator",
   "main": "index.js",
   "scripts": {
