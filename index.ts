@@ -96,6 +96,8 @@ function getArgs (
 		for(var parameter in parameters){
 			var parameterSettings = parameters[parameter];
 
+			var isDefault = false;
+
 			var helpMessageHead = `--${parameter}${parameterSettings.alias ? ' | -' + parameterSettings.alias : ''} ${parameterSettings.required ? '\u001b[0;31m[required]\u001b[0m' : ''} ${parameterSettings.default ? '(default ' + parameterSettings.default + ')' : ''}`;
 
 			helpMessage += `\r\n${helpMessageHead}${' '.repeat(50 - helpMessageHead.length + (parameterSettings.required ? 11 : 0))}${parameterSettings.help || ''}\r\n`;
@@ -107,6 +109,7 @@ function getArgs (
 
 			if(parameterSettings.hasOwnProperty('default') && !params[parameter]){
 				params[parameter] = parameterSettings.default;
+				isDefault = true;
 			}
 
 			if((parameterSettings.required || otherRequired.includes(parameter)) && !params.hasOwnProperty(parameter)){
@@ -119,7 +122,10 @@ function getArgs (
 				continue;
 			}
 
-			paramsFound++;
+			if(!isDefault){
+				paramsFound++;
+			}
+			
 
 			if(parameterSettings.requires){
 				otherRequired = [...otherRequired, ...parameterSettings.requires];
